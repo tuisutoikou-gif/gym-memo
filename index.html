@@ -3,78 +3,59 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>GYM MEMO</title>
+<meta name="theme-color" content="#111">
+<link rel="manifest" href="./manifest.json">
+<title>筋トレメモ</title>
 <style>
-:root{color-scheme:dark}
-*{box-sizing:border-box}
-body{margin:0;background:#101010;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}
-main{max-width:700px;margin:auto;padding:16px 14px 50px}
-header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px}
-h1{font-size:25px;margin:0}
-input,select,textarea{font:inherit;font-size:16px;color:#fff;background:#191919;border:1px solid #444;border-radius:10px;padding:11px;width:100%}
-button{font:inherit;font-weight:700;color:#fff;background:#292929;border:0;border-radius:10px;padding:12px;touch-action:manipulation}
-.card{background:#191919;border:1px solid #303030;border-radius:15px;padding:13px;margin:12px 0}
-.row{display:flex;gap:8px;align-items:center}.num{width:28px;color:#999;font-weight:800}.exercise-name{font-weight:700;font-size:17px}.danger{background:#3a1c1c;color:#ffb8b8;font-size:12px;padding:9px}
-.set{border-top:1px solid #333;margin-top:13px;padding-top:13px}.sethead{display:flex;justify-content:space-between;align-items:center;color:#aaa;font-size:12px;font-weight:800}.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:8px}
-label{display:block;color:#888;font-size:11px;margin-bottom:4px}.note{margin-top:8px}.add{width:100%;margin-top:12px;border:1px dashed #666}.big{background:#fff;color:#111;width:100%;margin-top:12px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}textarea{min-height:100px}
-#status{text-align:center;color:#8f8;font-size:13px;min-height:20px;margin-top:8px}.previous{margin-top:10px;background:#111;border:1px solid #343434;border-radius:12px;padding:10px}.previous-title{font-size:12px;color:#aaa;font-weight:800;margin-bottom:7px}.prev-date{color:#fff}.compare{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;font-size:12px}.compare div{background:#191919;border-radius:8px;padding:7px;text-align:center}.up{color:#8f8}.down{color:#ff8f8f}.same{color:#aaa}.pr{display:inline-block;margin-left:6px;padding:3px 6px;border-radius:6px;background:#5a4510;color:#ffd76a;font-size:10px}
-.history-card{background:#151515;border:1px solid #303030;border-radius:12px;padding:10px;margin-top:8px}.history-date{font-weight:800}.history-set{font-size:12px;color:#bbb;margin-top:4px}.muted{color:#777;font-size:12px}
+*{box-sizing:border-box}body{margin:0;background:#111;color:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}
+.app{max-width:760px;margin:auto;padding:16px 14px 70px}header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+h1{font-size:24px;margin:0;font-weight:800}input,textarea,select{width:100%;background:#101010;color:#fff;border:1px solid #444;border-radius:10px;padding:11px;font-size:16px;outline:none}
+input:focus,textarea:focus,select:focus{border-color:#aaa}.date{width:auto!important;min-width:145px}
+.card{background:#1b1b1b;border:1px solid #303030;border-radius:16px;padding:14px;margin:12px 0}.exercise-head{display:flex;gap:8px;align-items:center}
+.num{font-weight:800;color:#aaa;min-width:26px}.exercise-name{font-size:17px;font-weight:700}.set{border-top:1px solid #333;margin-top:13px;padding-top:13px}
+.set-title{font-size:12px;color:#aaa;margin-bottom:7px;font-weight:700}.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.label{font-size:11px;color:#999;margin:0 0 4px}.note{margin-top:8px}
+button{border:0;border-radius:10px;padding:11px 13px;font-weight:700;font-size:15px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button:active{transform:scale(.98)}.add{width:100%;background:#292929;color:#fff;margin-top:12px;border:1px dashed #666}
+.remove{background:#321b1b;color:#ffb0b0;font-size:12px;white-space:nowrap}.remove-set{float:right;background:transparent;color:#aaa;padding:2px 5px;font-size:12px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.primary{background:#fff;color:#111}.secondary{background:#292929;color:#fff}
+.section-title{font-size:14px;font-weight:800;margin-bottom:8px}textarea{min-height:110px;resize:vertical}.small{font-size:12px;color:#888;text-align:center;margin-top:12px}
 </style>
-<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#101010"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="GYM MEMO"><link rel="apple-touch-icon" href="icon.svg">
 </head>
 <body>
-<main>
-<header><h1>🏋️ GYM MEMO</h1><input id="date" type="date" style="width:auto"></header>
-<section id="exercises"></section>
-<button id="addExercise" class="big" type="button">＋ 種目を追加</button>
-<div class="card"><label>トレーニングMEMO</label><textarea id="overall" placeholder="今日のコンディション、感覚、次回の課題など"></textarea><div class="actions" style="margin-top:10px"><button id="newBtn" type="button">新しく作る</button><button id="saveBtn" type="button">💾 保存</button></div><div id="status"></div></div>
-<div class="card"><label>📚 種目の履歴</label><select id="historySelect"><option value="">種目を選ぶと過去記録を表示</option></select><div id="historyView" class="muted" style="margin-top:8px">まだ履歴がありません</div></div>
-</main>
+<div class="app">
+<header><h1>🏋️ 筋トレメモ</h1><input id="date" class="date" type="date"></header>
+<div id="exercises"></div>
+<button id="addExercise" class="add" type="button">＋ 種目を追加</button>
+<div class="card"><div class="section-title">トレーニングMEMO</div>
+<textarea id="overall" placeholder="今日のコンディション、感想、次回の課題など"></textarea>
+<div class="actions"><button id="clearBtn" class="secondary" type="button">新しく作る</button><button id="saveBtn" class="primary" type="button">💾 保存</button></div>
+</div>
+<div class="small">入力内容はこの端末のブラウザに保存されます</div>
+</div>
 <script>
-const $=s=>document.querySelector(s), exercises=$("#exercises"), date=$("#date"), overall=$("#overall"), status=$("#status");
-const CURRENT_KEY="gymMemoCurrent", HISTORY_KEY="gymMemoHistory";
-function today(){const d=new Date(),z=n=>String(n).padStart(2,"0");return d.getFullYear()+"-"+z(d.getMonth()+1)+"-"+z(d.getDate())}
-date.value=today();
-function getHistory(){try{return JSON.parse(localStorage.getItem(HISTORY_KEY))||[]}catch(e){return []}}
-function normalizeName(s){return String(s||"").trim().toLowerCase()}
-function findPrevious(name,currentDate){const key=normalizeName(name);if(!key)return null;return getHistory().filter(w=>w.date!==currentDate).sort((a,b)=>String(b.date).localeCompare(String(a.date))).map(w=>({workout:w,exercise:(w.exercises||[]).find(e=>normalizeName(e.name)===key)})).find(x=>x.exercise)?.exercise?getHistory().filter(w=>w.date!==currentDate).sort((a,b)=>String(b.date).localeCompare(String(a.date))).map(w=>({workout:w,exercise:(w.exercises||[]).find(e=>normalizeName(e.name)===key)})).find(x=>x.exercise):null}
-function formatSet(x){return `${x.weight||"-"}kg × ${x.reps||"-"}回${x.rir!==""&&x.rir!=null?` / RIR ${x.rir}`:""}`}
-function delta(a,b){const x=parseFloat(a),y=parseFloat(b);if(!Number.isFinite(x)||!Number.isFinite(y))return "";const d=x-y;return d>0?`<span class="up">+${d}</span>`:d<0?`<span class="down">${d}</span>`:`<span class="same">±0</span>`}
-function compareSet(current,previous){if(!previous)return "";const w=delta(current.weight,previous.weight),r=delta(current.reps,previous.reps);let pr="";const cw=parseFloat(current.weight),cr=parseFloat(current.reps),pw=parseFloat(previous.weight),prp=parseFloat(previous.reps);if(Number.isFinite(cw)&&Number.isFinite(cr)&&Number.isFinite(pw)&&Number.isFinite(prp)&&((cw>pw&&cr>=prp)||(cw===pw&&cr>prp)))pr='<span class="pr">PR更新?</span>';return `<div>重量<br>${w||"-"}</div><div>回数<br>${r||"-"}</div><div>前回<br>${formatSet(previous)}</div><div>判定<br>${pr||"比較"}</div>`}
-function addExercise(data={name:"",sets:[]}){
- const card=document.createElement("div");card.className="card exercise";
- const head=document.createElement("div");head.className="row";const num=document.createElement("div");num.className="num";
- const name=document.createElement("input");name.className="exercise-name";name.placeholder="種目名を入力";name.value=data.name||"";
- const del=document.createElement("button");del.type="button";del.className="danger";del.textContent="削除";del.onclick=()=>{card.remove();renumber();updateHistorySelect()};head.append(num,name,del);
- const previous=document.createElement("div");previous.className="previous";previous.style.display="none";
- const sets=document.createElement("div");const add=document.createElement("button");add.type="button";add.className="add";add.textContent="＋ セットを追加";add.onclick=()=>{addSet(sets);refreshPrevious(card)};
- card.append(head,previous,sets,add);exercises.append(card);
- name.addEventListener("input",()=>{refreshPrevious(card);updateHistorySelect()});
- if(data.sets&&data.sets.length)data.sets.forEach(x=>addSet(sets,x));else addSet(sets);
- renumber();refreshPrevious(card);
-}
-function addSet(parent,data={}){
- const s=document.createElement("div");s.className="set";const h=document.createElement("div");h.className="sethead";const title=document.createElement("span");
- const del=document.createElement("button");del.type="button";del.textContent="削除";del.onclick=()=>{s.remove();renumberSets(parent);const card=parent.closest(".exercise");if(card)refreshPrevious(card)};h.append(title,del);
- const grid=document.createElement("div");grid.className="grid";
- const makeField=(labelText,cls,val,mode)=>{const wrap=document.createElement("div"),lab=document.createElement("label"),inp=document.createElement("input");lab.textContent=labelText;inp.className=cls;inp.value=val??"";inp.inputMode=mode||"text";inp.addEventListener("input",()=>{const card=parent.closest(".exercise");if(card)refreshPrevious(card)});wrap.append(lab,inp);return wrap};
- grid.append(makeField("重量 kg","weight",data.weight,"decimal"),makeField("回数","reps",data.reps,"numeric"));
- const rw=document.createElement("div"),rl=document.createElement("label"),sel=document.createElement("select");rl.textContent="RIR";["","0","1","2","3","4","5"].forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v===""?"-":v;if(String(data.rir??"")===v)o.selected=true});sel.className="rir";sel.append(...[...rl.childNodes]);rw.append(rl,sel);grid.append(rw);
- const note=document.createElement("div");note.className="note";const nl=document.createElement("label"),ni=document.createElement("input");nl.textContent="セットメモ";ni.className="setnote";ni.placeholder="このセットの感覚・フォームなど";ni.value=data.note||"";note.append(nl,ni);
- s.append(h,grid,note);parent.append(s);renumberSets(parent)
-}
-function renumber(){[...exercises.children].forEach((e,i)=>e.querySelector(".num").textContent=(i+1)+".")}
-function renumberSets(p){[...p.children].forEach((s,i)=>s.querySelector(".sethead span").textContent="SET "+(i+1)}
-function collect(){return {date:date.value,overall:overall.value,exercises:[...document.querySelectorAll(".exercise")].map(e=>({name:e.querySelector(".exercise-name").value,sets:[...e.querySelectorAll(".set")].map(s=>({weight:s.querySelector(".weight").value,reps:s.querySelector(".reps").value,rir:s.querySelector(".rir").value,note:s.querySelector(".setnote").value}))}))}}
-function refreshPrevious(card){const name=card.querySelector(".exercise-name").value.trim(),box=card.querySelector(".previous");const prev=findPrevious(name,date.value);if(!prev||!prev.exercise){box.style.display="none";box.innerHTML="";return}box.style.display="block";const p=prev.exercise;const rows=p.sets.map((x,i)=>`<div style="margin-top:5px"><b>SET ${i+1}</b>　${formatSet(x)}</div>`).join("");const currentSets=[...card.querySelectorAll(".set")].map(s=>({weight:s.querySelector(".weight").value,reps:s.querySelector(".reps").value}));const comps=currentSets.map((x,i)=>compareSet(x,p.sets[i])).join("");box.innerHTML=`<div class="previous-title">前回：<span class="prev-date">${prev.workout.date}</span></div>${rows}<div class="previous-title" style="margin-top:10px">今回との比較</div><div class="compare">${comps||"<div>セットを入力すると比較できます</div>"}</div>`}
-function updateHistorySelect(){const sel=$("#historySelect"),names=[...new Set(getHistory().flatMap(w=>(w.exercises||[]).map(e=>e.name.trim())).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ja"));const old=sel.value;sel.innerHTML='<option value="">種目を選ぶと過去記録を表示</option>';names.forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;sel.append(o)});if(names.includes(old))sel.value=old}
-function renderHistory(name){const box=$("#historyView");if(!name){box.textContent="種目を選ぶと過去記録を表示";return}const rows=[];getHistory().sort((a,b)=>String(b.date).localeCompare(String(a.date))).forEach(w=>{(w.exercises||[]).filter(e=>normalizeName(e.name)===normalizeName(name)).forEach(e=>rows.push(`<div class="history-card"><div class="history-date">${w.date}</div>${e.sets.map((s,i)=>`<div class="history-set">SET ${i+1}：${formatSet(s)}${s.note?`　<span class="muted">${s.note}</span>`:""}</div>`).join("")}</div>`))});box.innerHTML=rows.length?rows.join(""):'<span class="muted">この種目の履歴はありません</span>'}
-$("#historySelect").onchange=e=>renderHistory(e.target.value);
-$("#addExercise").onclick=()=>addExercise();
-$("#saveBtn").onclick=()=>{const d=collect(),history=getHistory();const idx=history.findIndex(x=>x.date===d.date);if(idx>=0)history[idx]=d;else history.push(d);history.sort((a,b)=>String(a.date).localeCompare(String(b.date)));localStorage.setItem(HISTORY_KEY,JSON.stringify(history));localStorage.setItem(CURRENT_KEY,JSON.stringify(d));updateHistorySelect();document.querySelectorAll(".exercise").forEach(refreshPrevious);status.textContent="✓ 保存しました（履歴にも追加）";setTimeout(()=>status.textContent="",1800)};
-$("#newBtn").onclick=()=>{if(confirm("今の入力を消して新しく作りますか？")){exercises.innerHTML="";overall.value="";date.value=today();addExercise();}};
-function load(){try{const d=JSON.parse(localStorage.getItem(CURRENT_KEY)||localStorage.getItem("gymMemo"));if(d){date.value=d.date||today();overall.value=d.overall||"";if(d.exercises?.length)d.exercises.forEach(addExercise);else addExercise();return}}catch(e){}addExercise()}
-updateHistorySelect();load();
+(function(){
+"use strict";
+var KEY="gymMemoFixedV3",dateEl=document.getElementById("date"),exercisesEl=document.getElementById("exercises"),overallEl=document.getElementById("overall");
+function today(){var d=new Date();function z(n){return String(n).padStart(2,"0")}return d.getFullYear()+"-"+z(d.getMonth()+1)+"-"+z(d.getDate())}
+function esc(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function rirOptions(v){var s='<option value="">-</option>';for(var i=0;i<=5;i++)s+='<option value="'+i+'" '+(String(v)==String(i)?"selected":"")+'>'+i+"</option>";return s}
+function renumber(){var a=exercisesEl.querySelectorAll(".exercise");for(var i=0;i<a.length;i++)a[i].querySelector(".num").textContent=(i+1)+"."}
+function renumberSets(card){var a=card.querySelectorAll(".set");for(var i=0;i<a.length;i++)a[i].querySelector(".set-title").textContent="SET "+(i+1)}
+function addSet(card,data){data=data||{};var sets=card.querySelector(".sets"),div=document.createElement("div");div.className="set";div.innerHTML='<button class="remove-set" type="button">削除</button><div class="set-title">SET '+(sets.children.length+1)+'</div><div class="grid"><div><div class="label">重量 kg</div><input class="weight" inputmode="decimal" value="'+esc(data.weight)+'"></div><div><div class="label">回数</div><input class="reps" inputmode="numeric" value="'+esc(data.reps)+'"></div><div><div class="label">RIR</div><select class="rir">'+rirOptions(data.rir)+'</select></div></div><div class="note"><div class="label">セットメモ</div><input class="set-note" placeholder="フォーム、感覚、失敗点など" value="'+esc(data.note)+'"></div>';sets.appendChild(div)}
+function addExercise(data){data=data||{name:"",sets:[]};var card=document.createElement("div");card.className="card exercise";card.innerHTML='<div class="exercise-head"><div class="num">1.</div><input class="exercise-name" placeholder="種目名を入力" value="'+esc(data.name)+'"><button class="remove remove-exercise" type="button">削除</button></div><div class="sets"></div><button class="add add-set" type="button">＋ セットを追加</button>';exercisesEl.appendChild(card);if(data.sets&&data.sets.length){for(var i=0;i<data.sets.length;i++)addSet(card,data.sets[i])}else addSet(card);renumber()}
+function removeExercise(btn){var card=btn.closest(".exercise");if(card)card.remove();if(!exercisesEl.children.length)addExercise();renumber()}
+function collect(){var cards=exercisesEl.querySelectorAll(".exercise"),ex=[];for(var i=0;i<cards.length;i++){var c=cards[i],ss=c.querySelectorAll(".set"),sets=[];for(var j=0;j<ss.length;j++){var s=ss[j];sets.push({weight:s.querySelector(".weight").value,reps:s.querySelector(".reps").value,rir:s.querySelector(".rir").value,note:s.querySelector(".set-note").value})}ex.push({name:c.querySelector(".exercise-name").value,sets:sets})}return{date:dateEl.value,overall:overallEl.value,exercises:ex}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(collect()));alert("保存しました！")}catch(e){alert("保存できませんでした。")}}
+function load(){dateEl.value=today();try{var raw=localStorage.getItem(KEY);if(!raw){addExercise();return}var d=JSON.parse(raw);dateEl.value=d.date||today();overallEl.value=d.overall||"";exercisesEl.innerHTML="";if(d.exercises&&d.exercises.length){for(var i=0;i<d.exercises.length;i++)addExercise(d.exercises[i])}else addExercise()}catch(e){exercisesEl.innerHTML="";addExercise()}}
+dateEl.value=today();
+document.getElementById("addExercise").addEventListener("click",function(){addExercise()});
+document.getElementById("saveBtn").addEventListener("click",save);
+document.getElementById("clearBtn").addEventListener("click",function(){if(confirm("入力内容を消して新しく作りますか？")){exercisesEl.innerHTML="";overallEl.value="";addExercise()}});
+exercisesEl.addEventListener("click",function(e){var t=e.target;if(t.classList.contains("add-set")){var c=t.closest(".exercise");addSet(c);renumberSets(c)}else if(t.classList.contains("remove-set")){var c=t.closest(".exercise");t.closest(".set").remove();if(!c.querySelector(".set"))addSet(c);renumberSets(c)}else if(t.classList.contains("remove-exercise"))removeExercise(t)});
+load();
+if("serviceWorker"in navigator)navigator.serviceWorker.register("./sw.js?v=3").catch(function(){});
+})();
 </script>
-<script>if("serviceWorker"in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"));}</script>
-</body></html>
+</body>
+</html>
