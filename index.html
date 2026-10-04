@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>筋トレメモ テスト版</title>
+<style>
+body{margin:0;background:#111;color:#fff;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+main{max-width:700px;margin:auto;padding:16px}
+.card{background:#1d1d1d;border:1px solid #444;border-radius:14px;padding:14px;margin:12px 0}
+input,select,textarea{width:100%;box-sizing:border-box;background:#111;color:#fff;border:1px solid #555;border-radius:9px;padding:12px;font-size:16px}
+button{width:100%;border:0;border-radius:10px;padding:13px;margin-top:10px;font-size:16px;font-weight:bold;background:#333;color:#fff}
+.remove{background:#401f1f}.set{border-top:1px solid #444;margin-top:12px;padding-top:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}textarea{min-height:100px}
+#status{color:#aaa;text-align:center;margin-top:16px}
+</style>
+</head>
+<body>
+<main>
+<h1>🏋️ 筋トレメモ</h1>
+<div id="exercises"></div>
+<button id="addExercise">＋ 種目を追加</button>
+<div class="card">
+<textarea id="overall" placeholder="今日のコンディション、感想、次回の課題"></textarea>
+<button id="save">💾 保存</button>
+<button id="clear">新しく作る</button>
+</div>
+<div id="status">テスト版</div>
+</main>
+<script>
+"use strict";
+var exercises=document.getElementById("exercises"),overall=document.getElementById("overall");
+function addExercise(){
+ var card=document.createElement("div");card.className="card exercise";
+ var title=document.createElement("input");title.placeholder="種目名を入力";
+ var sets=document.createElement("div");sets.className="sets";
+ var remove=document.createElement("button");remove.textContent="種目を削除";remove.className="remove";remove.onclick=function(){card.remove()};
+ var addSetButton=document.createElement("button");addSetButton.textContent="＋ セットを追加";addSetButton.onclick=function(){addSet(sets)};
+ card.appendChild(title);card.appendChild(sets);card.appendChild(addSetButton);card.appendChild(remove);exercises.appendChild(card);addSet(sets);
+}
+function addSet(container){
+ var set=document.createElement("div");set.className="set";
+ var grid=document.createElement("div");grid.className="grid";
+ var weight=document.createElement("input");weight.placeholder="重量 kg";weight.inputMode="decimal";
+ var reps=document.createElement("input");reps.placeholder="回数";reps.inputMode="numeric";
+ var rir=document.createElement("select");var blank=document.createElement("option");blank.textContent="RIR";rir.appendChild(blank);
+ for(var i=0;i<=5;i++){var op=document.createElement("option");op.value=String(i);op.textContent="RIR "+i;rir.appendChild(op)}
+ grid.appendChild(weight);grid.appendChild(reps);grid.appendChild(rir);
+ var memo=document.createElement("input");memo.placeholder="このセットのメモ";
+ var remove=document.createElement("button");remove.textContent="セットを削除";remove.className="remove";remove.onclick=function(){set.remove()};
+ set.appendChild(grid);set.appendChild(memo);set.appendChild(remove);container.appendChild(set);
+}
+document.getElementById("addExercise").onclick=function(){addExercise()};
+document.getElementById("save").onclick=function(){localStorage.setItem("gymMemoTest",JSON.stringify({html:exercises.innerHTML,overall:overall.value}));document.getElementById("status").textContent="保存しました"};
+document.getElementById("clear").onclick=function(){exercises.innerHTML="";overall.value="";addExercise()};
+addExercise();
+</script>
+</body>
+</html>
